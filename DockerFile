@@ -1,5 +1,8 @@
 FROM python:2.7
+RUN apt-get update && apt-get install netcat -y
 RUN pip install pymysql
 RUN pip install git+https://git.openstack.org/openstack/ara
-CMD /usr/local/bin/ara-manage runserver -h 0.0.0.0 -p 8080
+ADD https://raw.githubusercontent.com/jakedevans/docker-compose-wait/1.0.0/wait.sh /wait.sh
+RUN chmod +x /wait.sh
+CMD /wait.sh && /usr/local/bin/ara-manage runserver -h 0.0.0.0 -p 8080
 EXPOSE 8080
